@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ShopApp.Maui.Views.InventoryView"
+             NavigatedFrom="ContentPage_NavigatedFrom"
+             NavigatedTo="ContentPage_NavigatedTo"
+             Title="InventoryView">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition Height="4*"/>
+                
+            </Grid.RowDefinitions>
+        <Button Grid.Row="0"
+            Text="Add"
+            Clicked="AddClicked"
+            Margin="10"
+            WidthRequest="300"
+            />
+        <Button Grid.Row="1"
+            Text="Edit"
+            Clicked="EditClicked"
+            Margin="10"
+            WidthRequest="300"
+            />
+        <Button Grid.Row="2"
+            Text="Delete"
+            Clicked="DeleteClicked"
+            Margin="10"
+            WidthRequest="300"/>
+
+        <Button Grid.Row="3"
+            Text="Specify Tax Rate"
+            Clicked="SpecifyTaxClicked"
+            Margin="10"
+            WidthRequest="300"/>
+
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+
+            </Grid.ColumnDefinitions>
+
+            <Entry
+            Grid.Column="0"
+            Text="{Binding TaxRate}"
+            IsVisible="{Binding EntryIsVisible}"
+            Margin="10"
+            WidthRequest="300"/>
+            <Label 
+                Grid.Column="1"
+                Text="Tax cannot contain letters."
+                IsVisible="{Binding TaxWarningIsVisible}"/>
+        </Grid>
+
+        <Button Grid.Row="5"
+            Text="Go Back"
+            Clicked="BackClicked"
+            Margin="10"
+            WidthRequest="300"
+            />
+
+        <ListView Grid.Row="6" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Frame Margin="10">
+                            <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition Width="7*"></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <Label Text="{Binding Id}" FontSize="Small"/>
+                            </Grid>
+                            <Grid Grid.Column="1">
+                                <Label Text="{Binding Name}" FontSize="Small"/>
+                            </Grid>
+                            <Grid Grid.Column="2">
+                                <Label Text="{Binding Description}" FontSize="14"/>
+                            </Grid>
+                            <Grid Grid.Column="3">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label  Grid.Row="0" Text="{Binding FormattedPrice}" FontSize="Small">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding IsMarkedDown}" Value="True">
+                                                <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label" Binding="{Binding IsMarkedDown}" Value="False">
+                                                <Setter Property="TextDecorations" Value="None" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+
+                                    <Label Grid.Row="1">
+                                        <Label.Style>
+                                            <Style TargetType="Label">
+                                                <Style.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding IsMarkedDown}" Value="True">
+                                                        <Setter Property="Text" Value="{Binding FormattedMarkedDown}"/>
+                                                        <Setter Property="FontSize" Value="Small"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding IsMarkedDown}" Value="False">
+                                                        <Setter Property="Text" Value=""/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Label.Style>
+                                    </Label>
+                                
+                                </Grid>
+                            <Grid Grid.Column="4">
+                                <Label Text="{Binding Stock}" FontSize="Small"/>
+                            </Grid>
+
+                                <Button Grid.Column="5" 
+                                    Text="Edit"
+                                    Command="{Binding Path=EditCommand}"
+                                    CommandParameter="{Binding}"
+                                    Margin="10"
+                                    WidthRequest="100"
+                                    HeightRequest="50"
+                                    />
+
+                                <Button Grid.Column="6" 
+                                    Text="Delete"
+                                    Command="{Binding Path=DeleteCommand}"
+                                    CommandParameter="{Binding}"
+                                    Clicked="InlineDelete_Clicked"
+                                    Margin="10"
+                                    WidthRequest="100"
+                                    HeightRequest="50"
+                                    />
+                                <Button Grid.Column="7" 
+                                    Command="{Binding Path=BOGOCommand}"
+                                    CommandParameter="{Binding}"
+                                    Text="BOGO"
+                                    Margin="10"
+                                    WidthRequest="100"
+                                    HeightRequest="50">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Style.Triggers>
+                                                <DataTrigger TargetType="Button" Binding="{Binding IsBogo}" Value="True">
+                                                    <Setter Property="BackgroundColor" Value="Green"/>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Button" Binding="{Binding IsBogo}" Value="False">
+                                                    <Setter Property="BackgroundColor" Value="Red"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+
+                            </Grid>
+                        </Frame>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        </Grid>
+
+</ContentPage>

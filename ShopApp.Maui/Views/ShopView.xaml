@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ShopApp.Maui.Views.ShopView"
+             Title="ShopView"
+             NavigatedTo="ContentPage_NavigatedTo_1">
+    <VerticalStackLayout>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <!--Search Box-->
+                <Grid Grid.Row="0"
+                      Grid.Column="1"
+                      Padding="20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Entry Grid.Column="0" Text="{Binding InventoryQuery}"/>
+                    <Button Grid.Column="1" WidthRequest="150" Text="Search" Clicked="InventorySearchClicked"/>
+                </Grid>
+                <!--Inventory-->
+                <ListView
+                    ItemsSource="{Binding Items}"
+                    SelectedItem="{Binding ItemToBuy}"
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition  Width="3*"/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Grid.Column="0" Text="{Binding Id}"/>
+
+
+                                    <Label  Grid.Column="1" Text="{Binding FormattedPrice}">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding IsMarkedDown}" Value="True">
+                                                <Setter Property="TextDecorations" Value="Strikethrough" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label" Binding="{Binding IsMarkedDown}" Value="False">
+                                                <Setter Property="TextDecorations" Value="None" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+
+
+                                    <Label Grid.Column="2">
+                                        <Label.Style>
+                                            <Style TargetType="Label">
+                                                <Style.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding IsMarkedDown}" Value="True">
+                                                        <Setter Property="Text" Value="{Binding FormattedMarkedDown}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding IsMarkedDown}" Value="False">
+                                                        <Setter Property="Text" Value=""/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Label.Style>
+                                    </Label>
+
+
+                                    <Label Grid.Column="3" Text="{Binding Name}"/>
+
+                                    <Label Grid.Column="4">
+                                        <Label.Style>
+                                        <Style TargetType="Label">
+                                            <Style.Triggers>
+                                                <DataTrigger TargetType="Label" Binding="{Binding IsBogo}" Value="True">
+                                                    <Setter Property="Text" Value="BOGO"/>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Label" Binding="{Binding IsBogo}" Value="False">
+                                                    <Setter Property="Text" Value=""/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                        </Label.Style>
+                                    </Label>
+
+
+
+                                    <Label Grid.Column="5" Text="{Binding Stock}"/>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+
+            <!--List of Carts-->
+            <Grid Grid.Column="1">
+                <ListView
+                    ItemsSource="{Binding Carts}"
+                    SelectedItem="{Binding SelectedCart}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Label Text="{Binding Id}"/>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    
+                </ListView>
+            </Grid>
+
+            <Grid Grid.Row="0" Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Text="SubTotal:"></Label>
+                <Label Grid.Row="0" Grid.Column="1" Text="{Binding FormattedSubTotal}"/>
+                <Label Grid.Row="1" Grid.Column="0" Text="Tax:"></Label>
+                <Label Grid.Row="1" Grid.Column="1" Text="{Binding FormattedTax}"/>
+                <Label Grid.Row="2" Grid.Column="0" Text="Total:"></Label>
+                <Label Grid.Row="2" Grid.Column="1" Text="{Binding FormattedTotal}"/>
+                <Button Grid.Row="3" Text="Checkout" Clicked="CheckoutClicked" MaximumHeightRequest="100" MaximumWidthRequest="200" Margin="10"/>
+
+
+                </Grid>
+                <!--Cart Items-->
+                <ListView
+                    ItemsSource="{Binding SelectedCartItems}"
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="5*"/>
+                                        <ColumnDefinition/>
+
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Grid.Column="0" Text="{Binding Id}"/>
+                                    <Label Grid.Column="1" Text="{Binding FormattedPrice}"/>
+                                    <Label Grid.Column="2" Text="{Binding Name}"/>
+                                    <Label Grid.Column="3" Text="{Binding Stock}"/>
+
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+ 
+            </Grid>
+            <Grid Grid.Row="1">
+                <Label Text=""/>
+            </Grid>
+
+
+            <Grid
+                Grid.Row="2"
+                Grid.ColumnSpan="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Button
+                    Grid.Row="0"
+                    Text="Place in Cart"
+                    Clicked="PlaceInCart"
+                    />
+                <Button
+                    Grid.Row="1"
+                    Text="Change Cart"
+                    Clicked="ChangeCart"
+                    />
+                <Button
+                    Grid.Row="2"
+                    Text="Add a wish list"
+                    Clicked="AddNewCart"/>
+                <Button
+                    Grid.Row="3"
+                    Text="Cancel"
+                    Clicked="CancelClicked"
+                    />
+            </Grid>
+
+ 
+
+        </Grid>
+
+
+
+    </VerticalStackLayout>
+</ContentPage>

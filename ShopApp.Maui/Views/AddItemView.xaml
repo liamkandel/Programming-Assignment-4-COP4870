@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ShopApp.Maui.Views.AddItemView"
+             Title="AddItemView"
+             NavigatedTo="ContentPage_NavigatedTo">
+    <VerticalStackLayout>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Row="0" Grid.Column="0">
+                <Label Text="Name"/>
+            </Grid>
+            <Grid Grid.Row="0" Grid.Column="1">
+                <Entry Text="{Binding Name}"/>
+            </Grid>
+
+
+            <Grid Grid.Row="1" Grid.Column="0">
+                <Label Text="Description"/>
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="1">
+                <Entry Text="{Binding Description}"/>
+            </Grid>
+
+
+            <Grid Grid.Row="2" Grid.Column="0">
+                <Label Text="Price"/>
+            </Grid>
+            <Grid Grid.Row="2" Grid.Column="1">
+                <Entry Text="{Binding Price}"/>
+            </Grid>
+
+
+            <Grid Grid.Row="3" Grid.Column="0">
+                <Label Text="Stock"/>
+            </Grid>
+            <Grid Grid.Row="3" Grid.Column="1">
+                <Entry Text="{Binding Stock}"/>
+            </Grid>
+
+
+            <Grid Grid.Row="4" Grid.Column="0">
+                <Label Text="Mark Down"/>
+            </Grid>
+            <Grid Grid.Row="4" Grid.Column="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Entry  Grid.Column="0" Text="{Binding MarkDown}"/>
+                    <Label  Grid.Column="1" Text="%" Margin="0"/>
+
+                </Grid>
+            </Grid>
+            
+            
+        </Grid>
+        <Button Text="Add New Item" Clicked="onAddNewItem"/>
+        <Button Text="Go Back" Clicked="OnGoBack"/>
+    </VerticalStackLayout>
+</ContentPage>
