@@ -1,9 +1,8 @@
-﻿// Liam Kandel
-using ShopApp.Maui.DTO;
+﻿using ShopAppLib.Models;
 
-namespace ShopAppLib.Models
+namespace ShopApp.Maui.DTO
 {
-    public class Item
+    public class ItemDTO
     {
         public string? Name { get; set; }
         public string? Description { get; set; }
@@ -33,12 +32,7 @@ namespace ShopAppLib.Models
 
         public decimal MarkDown { get; set; }
 
-
-        public Item()
-        {
-        }
-
-        public Item(ItemDTO i)
+        public ItemDTO(Item i)
         {
             Name = i.Name;
             Description = i.Description;
@@ -50,5 +44,21 @@ namespace ShopAppLib.Models
             MarkedDownPrice = i.MarkedDownPrice;
             MarkDown = i.MarkDown;
         }
+
+        public ItemDTO(ItemDTO i)
+        {
+            Name = i.Name;
+            Description = i.Description;
+            Price = i.Price;
+            Stock = i.Stock;
+            Id = i.Id;
+            IsBogo = i.IsBogo;
+            IsMarkedDown = i.IsMarkedDown;
+            MarkedDownPrice = i.MarkedDownPrice;
+            MarkDown = i.MarkDown;
+        }
+        public ItemDTO()
+        { }
+
     }
 }

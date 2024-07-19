@@ -1,4 +1,6 @@
-﻿namespace ShopApp.Maui
+﻿using ShopAppLib.Utilities;
+
+namespace ShopApp.Maui
 {
     public partial class MainPage : ContentPage
     {
@@ -6,6 +8,7 @@
         public MainPage()
         {
             InitializeComponent();
+            Console.WriteLine(new WebRequestHandler().Get("/WeatherForecast"));
         }
 
 

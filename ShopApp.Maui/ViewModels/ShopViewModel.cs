@@ -1,4 +1,5 @@
-﻿using ShopAppLib;
+﻿using ShopApp.Maui.DTO;
+using ShopAppLib;
 using ShopAppLib.Maui.ViewModels;
 using ShopAppLib.Models;
 using System.ComponentModel;
@@ -48,7 +49,7 @@ namespace ShopApp.Maui.ViewModels
         }
 
         public ShoppingCart? SelectedCart { get; set; }
-        public List<Item> SelectedCartItems { get { return SelectedCart?.Contents?.ToList() ?? new List<Item>(); } }
+        public List<ItemDTO> SelectedCartItems { get { return SelectedCart?.Contents?.ToList() ?? new List<ItemDTO>(); } }
 
         public decimal SubTotal
         {

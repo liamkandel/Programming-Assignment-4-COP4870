@@ -1,4 +1,4 @@
-﻿using ShopAppLib.Models;
+﻿using ShopApp.Maui.DTO;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -18,7 +18,7 @@ namespace ShopAppLib.Maui.ViewModels
 
         public ICommand? BOGOCommand { get; private set; }
 
-        public Item? Item;
+        public ItemDTO? Item;
 
         private string? name;
         public string? Name
@@ -174,7 +174,7 @@ namespace ShopAppLib.Maui.ViewModels
             ChangeMarkedDownPrice();
             if (this.MarkDown == 0) { this.IsMarkedDown = false; }
             else { this.IsMarkedDown = true; }
-            var newItem = new Item
+            var newItem = new ItemDTO
             {
                 Name = this.Name,
                 Description = this.Description,
@@ -203,7 +203,7 @@ namespace ShopAppLib.Maui.ViewModels
 
         public ItemViewModel()
         {
-            Item = new Item();
+            Item = new ItemDTO();
             SetupCommands();
         }
 
@@ -213,7 +213,7 @@ namespace ShopAppLib.Maui.ViewModels
 
             if (Item == null)
             {
-                Item = new Item();
+                Item = new ItemDTO();
             }
 
             Id = Item.Id;
@@ -227,7 +227,7 @@ namespace ShopAppLib.Maui.ViewModels
 
         }
 
-        public ItemViewModel(Item i)
+        public ItemViewModel(ItemDTO i)
         {
             Item = i;
             Id = Item.Id;

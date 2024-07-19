@@ -5,7 +5,7 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopAppLib", "ShopAppLib\ShopAppLib.csproj", "{B2BE99E8-B62C-476D-9504-5C65F60761E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopApp.Maui", "ShopApp.Maui\ShopApp.Maui.csproj", "{160205E8-E9D6-4AFC-B0DA-C3124256E314}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopApp.Maui", "ShopApp.Maui\ShopApp.Maui.csproj", "{160205E8-E9D6-4AFC-B0DA-C3124256E314}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

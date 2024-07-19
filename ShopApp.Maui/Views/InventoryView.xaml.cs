@@ -46,4 +46,8 @@ public partial class InventoryView : ContentPage
         (BindingContext as InventoryViewModel).GetTax();
     }
 
+    private void SearchClicked(object sender, EventArgs e)
+    {
+        (BindingContext as InventoryViewModel).Search();
+    }
 }

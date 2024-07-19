@@ -1,4 +1,5 @@
-﻿using ShopAppLib.Models;
+﻿using ShopApp.Maui.DTO;
+using ShopAppLib.Models;
 
 namespace ShopAppLib
 {
@@ -7,7 +8,7 @@ namespace ShopAppLib
 
         private CartServiceProxy()
         {
-            carts.Add(new ShoppingCart { Id = 1, Contents = new List<Item>() });
+            carts.Add(new ShoppingCart { Id = 1, Contents = new List<ItemDTO>() });
         }
 
         private static CartServiceProxy? instance;
@@ -55,7 +56,7 @@ namespace ShopAppLib
             );
         }
 
-        public Item? AddOrUpdate(Item? i, ShoppingCart c)
+        public ItemDTO? AddOrUpdate(ItemDTO? i, ShoppingCart c)
         {
             if (carts == null) { return null; }
             if (c == null) { return null; }
@@ -88,7 +89,7 @@ namespace ShopAppLib
             }
             else
             {
-                Item newItem = new Item
+                ItemDTO newItem = new ItemDTO
                 {
                     Name = i.Name,
                     Price = i.Price,
@@ -110,7 +111,7 @@ namespace ShopAppLib
             return i;
         }
 
-        public Item? UpdateCarts(Item i)
+        public ItemDTO? UpdateCarts(ItemDTO i)
         {
             {
                 if (i == null) { return null; }
@@ -124,7 +125,7 @@ namespace ShopAppLib
                     }
                     else
                     {
-                        Item newItem = new Item
+                        ItemDTO newItem = new ItemDTO
                         {
                             Name = i.Name,
                             Price = i.Price,

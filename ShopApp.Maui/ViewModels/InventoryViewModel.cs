@@ -12,6 +12,7 @@ namespace ShopAppLib.Maui.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public string? Query { get; set; }
         public List<ItemViewModel> Items
         {
             get
@@ -62,6 +63,7 @@ namespace ShopAppLib.Maui.ViewModels
 
         public void RefreshItems()
         {
+            InventoryServiceProxy.Current.Get();
             NotifyPropertyChanged("Items");
         }
 
@@ -76,14 +78,14 @@ namespace ShopAppLib.Maui.ViewModels
             InventoryServiceProxy.Current.AddOrUpdate(SelectedItem.Item);
         }
 
-        public void DeleteItem()
+        public async void DeleteItem()
         {
             if (SelectedItem?.Item == null)
             {
                 return;
             }
 
-            InventoryServiceProxy.Current.Delete(SelectedItem.Item.Id);
+            await InventoryServiceProxy.Current.Delete(SelectedItem.Item.Id);
             CartServiceProxy.Current.Delete(SelectedItem.Item.Id);
             RefreshItems();
         }
@@ -107,6 +109,12 @@ namespace ShopAppLib.Maui.ViewModels
             NotifyPropertyChanged(nameof(EntryIsVisible));
             NotifyPropertyChanged(nameof(TaxWarningIsVisible));
             NotifyPropertyChanged(nameof(TaxRate));
+        }
+
+        public async void Search()
+        {
+            //await InventoryServiceProxy.Current.Search(Query ?? string.Empty);
+            NotifyPropertyChanged(nameof(Items));
         }
 
     }
