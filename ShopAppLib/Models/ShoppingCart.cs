@@ -11,5 +11,10 @@ namespace ShopAppLib.Models
         {
             Contents = new List<ItemDTO>();
         }
+
+        public override string ToString()
+        {
+            return Id.ToString();
+        }
     }
 }

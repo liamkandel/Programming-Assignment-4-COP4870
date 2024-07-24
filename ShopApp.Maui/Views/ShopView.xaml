@@ -6,6 +6,7 @@
              NavigatedTo="ContentPage_NavigatedTo_1">
     <VerticalStackLayout>
         <Grid>
+            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -15,7 +16,9 @@
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
+            
             <Grid Grid.Row="0">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -112,19 +115,25 @@
             </Grid>
 
             <!--List of Carts-->
-            <Grid Grid.Column="1">
-                <ListView
+            <Grid Grid.Row="0"
+                Grid.Column="1">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                
+                <Picker Grid.Column="0"
                     ItemsSource="{Binding Carts}"
-                    SelectedItem="{Binding SelectedCart}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <Label Text="{Binding Id}"/>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                    
-                </ListView>
+                    SelectedItem="{Binding SelectedCart}"
+                    ItemDisplayBinding="{Binding Id}"
+                    MaximumHeightRequest="50"
+                        WidthRequest="300">
+                </Picker>
+                <Button Grid.Column="1" Text="+" Clicked="AddNewCart"                     
+                        MaximumHeightRequest="50"
+                        MaximumWidthRequest="100"/>
+
             </Grid>
 
             <Grid Grid.Row="0" Grid.Column="2">
@@ -188,38 +197,20 @@
                 <Label Text=""/>
             </Grid>
 
-
-            <Grid
+            <Button
                 Grid.Row="2"
-                Grid.ColumnSpan="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Button
-                    Grid.Row="0"
-                    Text="Place in Cart"
-                    Clicked="PlaceInCart"
-                    />
-                <Button
-                    Grid.Row="1"
-                    Text="Change Cart"
-                    Clicked="ChangeCart"
-                    />
-                <Button
-                    Grid.Row="2"
-                    Text="Add a wish list"
-                    Clicked="AddNewCart"/>
-                <Button
-                    Grid.Row="3"
-                    Text="Cancel"
-                    Clicked="CancelClicked"
-                    />
-            </Grid>
-
- 
+                Grid.Column="1"
+                Text="Place in Cart"
+                Clicked="PlaceInCart"
+                MaximumWidthRequest="250"
+                />
+            <Button
+                Grid.Row="3"
+                Grid.Column="1"
+                Text="Cancel"
+                Clicked="CancelClicked"
+                MaximumWidthRequest="250"
+                />
 
         </Grid>
 

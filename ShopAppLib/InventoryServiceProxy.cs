@@ -60,15 +60,12 @@ namespace ShopAppLib
         public async Task<ItemDTO> AddOrUpdate(ItemDTO? item)
         {
             var response = await new WebRequestHandler().Post("/Inventory", item);
-            Get();
             return JsonConvert.DeserializeObject<ItemDTO>(response);
-
-
         }
 
-        public IEnumerable<ItemDTO> Get()
+        public async Task<IEnumerable<ItemDTO>> Get()
         {
-            var response = new WebRequestHandler().Get("/Inventory").Result;
+            var response = await new WebRequestHandler().Get("/Inventory");
             if (response == null) { items = null; }
             items = JsonConvert.DeserializeObject<List<ItemDTO>>(response) ?? new List<ItemDTO>();
             return items;
@@ -82,13 +79,13 @@ namespace ShopAppLib
         }
         public async Task<IEnumerable<ItemDTO>> Search(Query query)
         {
-            if (query == null || query.QueryString == null)
+            if (query == null)
             {
-                return Get();
+                return await Get();
             }
-            var response = new WebRequestHandler().Post("/Inventory/Search", query).Result;
-            var result = JsonConvert.DeserializeObject<List<ItemDTO>>(response);
-            return result;
+            var response = await new WebRequestHandler().Post("/Search", query);
+            items = JsonConvert.DeserializeObject<List<ItemDTO>>(response);
+            return items;
 
         }
     }

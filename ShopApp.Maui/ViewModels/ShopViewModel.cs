@@ -2,6 +2,7 @@
 using ShopAppLib;
 using ShopAppLib.Maui.ViewModels;
 using ShopAppLib.Models;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -12,10 +13,10 @@ namespace ShopApp.Maui.ViewModels
         public ShopViewModel()
         {
             InventoryQuery = string.Empty;
+            Carts = new ObservableCollection<ShoppingCart>(CartServiceProxy.Current.Carts);
+            SelectedCart = Carts.FirstOrDefault();
+
         }
-
-
-
 
         private string inventoryQuery;
         public string InventoryQuery
@@ -39,17 +40,55 @@ namespace ShopApp.Maui.ViewModels
         }
         public ItemViewModel ItemToBuy { get; set; }
 
-
-        public List<ShoppingCart> Carts
+        private ObservableCollection<ShoppingCart> carts;
+        public ObservableCollection<ShoppingCart> Carts
         {
             get
             {
-                return CartServiceProxy.Current.Carts.Where(p => p != null).ToList() ?? new List<ShoppingCart>();
+                return carts;
+            }
+            set
+            {
+                if (carts != value)
+                {
+                    carts = value;
+                    NotifyPropertyChanged();
+                }
             }
         }
 
-        public ShoppingCart? SelectedCart { get; set; }
-        public List<ItemDTO> SelectedCartItems { get { return SelectedCart?.Contents?.ToList() ?? new List<ItemDTO>(); } }
+        private ShoppingCart? selectedCart;
+
+        public ShoppingCart? SelectedCart
+        {
+            get
+            {
+                return selectedCart;
+            }
+
+            set
+            {
+                if (selectedCart != value)
+                {
+                    selectedCart = value;
+                    NotifyPropertyChanged();
+                    NotifyPropertyChanged(nameof(SelectedCartItems));
+                    NotifyPropertyChanged(nameof(FormattedTax));
+                    NotifyPropertyChanged(nameof(FormattedSubTotal));
+                    NotifyPropertyChanged(nameof(FormattedTotal));
+                }
+            }
+        }
+        public List<ItemDTO> SelectedCartItems
+        {
+            get
+            {
+                return SelectedCart?.Contents?.Where(p => p != null)
+                    .Where(p => p?.Name?.ToUpper()?.Contains(InventoryQuery.ToUpper()) ?? false)
+                    .Select(p => new ItemDTO(p)).ToList()
+                    ?? new List<ItemDTO>();
+            }
+        }
 
         public decimal SubTotal
         {
@@ -114,7 +153,6 @@ namespace ShopApp.Maui.ViewModels
             NotifyPropertyChanged(nameof(taxRate));
             NotifyPropertyChanged(nameof(FormattedTax));
             NotifyPropertyChanged(nameof(FormattedTotal));
-
         }
 
         public void Search()
@@ -133,8 +171,6 @@ namespace ShopApp.Maui.ViewModels
                 NotifyPropertyChanged(nameof(FormattedTax));
                 NotifyPropertyChanged(nameof(FormattedTotal));
                 NotifyPropertyChanged(nameof(SelectedCartItems));
-
-
             }
         }
         public void ReduceItemToBuy()
@@ -148,8 +184,13 @@ namespace ShopApp.Maui.ViewModels
         public void AddNewCart()
         {
             CartServiceProxy.Current.AddNewCart();
+            Carts.Clear();
+            foreach (var cart in CartServiceProxy.Current.Carts)
+            {
+                Carts.Add(cart);
+            }
             SelectedCart = Carts.LastOrDefault();
-            NotifyPropertyChanged(nameof(Carts));
+
         }
 
         public void ChangeCart()
@@ -166,12 +207,6 @@ namespace ShopApp.Maui.ViewModels
             }
             SelectedCart = null;
             NotifyPropertyChanged(nameof(Carts));
-            NotifyPropertyChanged(nameof(SelectedCart));
-            NotifyPropertyChanged(nameof(SelectedCartItems));
-            NotifyPropertyChanged(nameof(FormattedSubTotal));
-            NotifyPropertyChanged(nameof(FormattedTax));
-            NotifyPropertyChanged(nameof(FormattedTotal));
-
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using ShopApp.Maui.DTO;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace ShopAppLib.Maui.ViewModels
@@ -12,7 +13,9 @@ namespace ShopAppLib.Maui.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public string? Query { get; set; }
+
+        public string query { get; set; }
+
         public List<ItemViewModel> Items
         {
             get
@@ -61,10 +64,10 @@ namespace ShopAppLib.Maui.ViewModels
             TaxWarningIsVisible = false;
         }
 
-        public void RefreshItems()
+        public async void RefreshItems()
         {
-            InventoryServiceProxy.Current.Get();
-            NotifyPropertyChanged("Items");
+            await InventoryServiceProxy.Current.Get();
+            NotifyPropertyChanged(nameof(Items));
         }
 
         public void UpdateItem()
@@ -113,9 +116,54 @@ namespace ShopAppLib.Maui.ViewModels
 
         public async void Search()
         {
-            //await InventoryServiceProxy.Current.Search(Query ?? string.Empty);
+            if (query == null) return;
+            await InventoryServiceProxy.Current.Search(new Utilities.Query { QueryString = query });
             NotifyPropertyChanged(nameof(Items));
         }
 
+
+        public async Task<IEnumerable<ItemDTO>> ImportCSV()
+        {
+            var fileResult = await FilePicker.PickAsync(new PickOptions
+            {
+                PickerTitle = "Select a CSV file",
+            });
+
+            if (fileResult != null)
+            {
+                using var stream = await fileResult.OpenReadAsync();
+                using var reader = new StreamReader(stream);
+
+                var items = new List<ItemDTO>();
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    var columns = line.Split(',');
+
+                    if (columns.Length >= 8)
+                    {
+                        var item = new ItemDTO
+                        {
+                            Name = columns[0],
+                            Description = columns[1],
+                            Price = decimal.Parse(columns[2]),
+                            Stock = int.Parse(columns[3]),
+                            IsBogo = bool.Parse(columns[4]),
+                            IsMarkedDown = bool.Parse(columns[5]),
+                            MarkedDownPrice = decimal.Parse(columns[6]),
+                            MarkDown = decimal.Parse(columns[7])
+                        };
+                        items.Add(item);
+                        await InventoryServiceProxy.Current.AddOrUpdate(item);
+                        RefreshItems();
+                    }
+                    else { break; }
+                }
+
+                return items;
+            }
+
+            return null;
+        }
     }
 }

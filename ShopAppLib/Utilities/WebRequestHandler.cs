@@ -91,5 +91,10 @@ namespace ShopAppLib.Utilities
                 }
             }
         }
+
+        public async Task<string> Post(string url, string message)
+        {
+            return await Post(url, new { message = message });
+        }
     }
 }

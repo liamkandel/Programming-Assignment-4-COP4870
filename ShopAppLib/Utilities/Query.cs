@@ -2,6 +2,6 @@
 {
     public class Query
     {
-        public string? QueryString { get; set; }
+        public string QueryString { get; set; }
     }
 }

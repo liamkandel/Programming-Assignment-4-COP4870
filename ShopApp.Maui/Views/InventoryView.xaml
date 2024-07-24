@@ -47,27 +47,35 @@
             Text="Delete"
             Clicked="DeleteClicked"
             />
-            <Button Grid.Row="3"
-            Margin="10"
-            Text="Specify Tax Rate"
-            Clicked="SpecifyTaxClicked"
-            />
-            <Entry Grid.Row="3" Grid.Column="1"
+            
+            <Entry Grid.Row="3"
             Margin="10"
             Text="{Binding TaxRate}"
+            />
+            <Button Grid.Row="3" Grid.Column="1"
+            Margin="10"
+            Text="Set Tax"
+            Clicked="SpecifyTaxClicked"
             />
             <Label Grid.Row="3" Grid.Column="2"
             Margin="10"
             Text="Tax cannot contain letters."
             IsVisible="{Binding TaxWarningIsVisible}"
             />
-            <Entry Grid.Row="4" Grid.Column="0" BindingContext="{Binding Query}"/>
+            
+            <Entry Grid.Row="4" Grid.Column="0" Text="{Binding query}"/>
             <Button Grid.Row="4" Grid.Column="1" Text="Search" Clicked="SearchClicked" />
 
             <Button Grid.Row="5"
             Margin="10"
             Text="Go Back"
             Clicked="BackClicked"
+            />
+            
+            <Button Grid.Row="6"
+            Margin="10"
+            Text="Import CSV"
+            Clicked="ImportClicked"
             />
         </Grid>
 

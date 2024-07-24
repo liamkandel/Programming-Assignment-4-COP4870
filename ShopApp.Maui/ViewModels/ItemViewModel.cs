@@ -148,7 +148,7 @@ namespace ShopAppLib.Maui.ViewModels
             Shell.Current.GoToAsync($"//AddItem?itemId={i.Item.Id}");
         }
 
-        private void ExecuteDelete(int? id)
+        private async void ExecuteDelete(int? id)
         {
             if (id == null)
             {
@@ -156,7 +156,7 @@ namespace ShopAppLib.Maui.ViewModels
             }
 
 
-            InventoryServiceProxy.Current.Delete(id ?? 0);
+            await InventoryServiceProxy.Current.Delete(id ?? 0);
             CartServiceProxy.Current.Delete(id ?? 0);
         }
 
@@ -164,12 +164,11 @@ namespace ShopAppLib.Maui.ViewModels
         {
             if (id == null) { return; }
 
-
             IsBogo = !IsBogo;
             Add();
         }
 
-        public void Add()
+        public async void Add()
         {
             ChangeMarkedDownPrice();
             if (this.MarkDown == 0) { this.IsMarkedDown = false; }
@@ -187,7 +186,7 @@ namespace ShopAppLib.Maui.ViewModels
                 MarkedDownPrice = this.MarkedDownPrice,
 
             };
-            InventoryServiceProxy.Current.AddOrUpdate(newItem);
+            await InventoryServiceProxy.Current.AddOrUpdate(newItem);
             CartServiceProxy.Current.UpdateCarts(newItem);
         }
 
@@ -221,9 +220,11 @@ namespace ShopAppLib.Maui.ViewModels
             Description = Item.Description;
             Price = Item.Price;
             Stock = Item.Stock;
+            IsBogo = Item.IsBogo;
             IsMarkedDown = Item.IsMarkedDown;
             MarkDown = Item.MarkDown;
             MarkedDownPrice = Item.MarkedDownPrice;
+
 
         }
 

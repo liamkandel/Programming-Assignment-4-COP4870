@@ -50,4 +50,9 @@ public partial class InventoryView : ContentPage
     {
         (BindingContext as InventoryViewModel).Search();
     }
+
+    private void ImportClicked(object sender, EventArgs e)
+    {
+        (BindingContext as InventoryViewModel).ImportCSV();
+    }
 }
