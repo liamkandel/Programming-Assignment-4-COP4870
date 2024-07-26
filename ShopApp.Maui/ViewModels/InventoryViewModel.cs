@@ -20,8 +20,10 @@ namespace ShopAppLib.Maui.ViewModels
         {
             get
             {
-                return InventoryServiceProxy.Current?.Items?.Select(c => new ItemViewModel(c)).ToList()
-                    ?? new List<ItemViewModel>();
+                InventoryServiceProxy.Current.Get();
+                return (InventoryServiceProxy.Current?.Items?.Select(c => new ItemViewModel(c)).ToList()
+                    ?? new List<ItemViewModel>());
+
             }
         }
 

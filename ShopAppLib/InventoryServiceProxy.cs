@@ -67,7 +67,7 @@ namespace ShopAppLib
         {
             var response = await new WebRequestHandler().Get("/Inventory");
             if (response == null) { items = null; }
-            items = JsonConvert.DeserializeObject<List<ItemDTO>>(response) ?? new List<ItemDTO>();
+            items = JsonConvert.DeserializeObject<List<ItemDTO>>(response ?? string.Empty) ?? new List<ItemDTO>();
             return items;
         }
 

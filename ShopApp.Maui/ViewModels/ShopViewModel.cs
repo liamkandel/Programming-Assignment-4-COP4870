@@ -32,7 +32,8 @@ namespace ShopApp.Maui.ViewModels
         {
             get
             {
-                return InventoryServiceProxy.Current.Items.Where(p => p != null)
+                InventoryServiceProxy.Current.Get();
+                return InventoryServiceProxy.Current.Items?.Where(p => p != null)
                     .Where(p => p?.Name?.ToUpper()?.Contains(InventoryQuery.ToUpper()) ?? false)
                     .Select(p => new ItemViewModel(p)).ToList()
                     ?? new List<ItemViewModel>();
@@ -40,7 +41,7 @@ namespace ShopApp.Maui.ViewModels
         }
         public ItemViewModel ItemToBuy { get; set; }
 
-        private ObservableCollection<ShoppingCart> carts;
+        private ObservableCollection<ShoppingCart> carts = new ObservableCollection<ShoppingCart>(CartServiceProxy.Current.Carts);
         public ObservableCollection<ShoppingCart> Carts
         {
             get
@@ -204,8 +205,9 @@ namespace ShopApp.Maui.ViewModels
             else
             {
                 CartServiceProxy.Current.RemoveCart(SelectedCart);
+                Carts.Remove(SelectedCart);
             }
-            SelectedCart = null;
+            SelectedCart = Carts.LastOrDefault();
             NotifyPropertyChanged(nameof(Carts));
         }
 
